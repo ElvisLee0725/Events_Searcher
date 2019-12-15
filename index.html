@@ -9,14 +9,46 @@
     <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"> -->
     <link rel="stylesheet" href="bootstrap-4.4.1-dist/css/bootstrap.min.css">
     <title>Events Searcher</title>
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 400px;
+      }
+    </style>
   </head>
   <body>
     <div class="jumbotron jumbotron-fluid">
         <div class="container">
-          <h1 class="display-4">Fluid jumbotron</h1>
-          <p class="lead">This is a modified jumbotron that occupies the entire horizontal space of its parent.</p>
+          <h1 class="display-4">Events Searcher</h1>
+          <p class="lead">Search for events and show them on a map!</p>
         </div>
     </div>
+    <section id="searchInputs">
+      <input class="eventTitle" placeholder="Enter Event Title">
+    </section>
+    <section>
+      <div id="map"></div>
+    </section>
+
+    <section>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Title</th>
+            <th scope="col">City</th>
+            <th scope="col">Venue</th>
+            <th scope="col">Date</th>
+            <th scope="col">Photo</th>
+          </tr>
+        </thead>
+        <tbody id="eventsList">
+       
+        </tbody>
+      </table>
+    </section>
+
+    
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -25,9 +57,10 @@
     <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script> -->
     <script src="http://code.jquery.com/jquery-3.1.0.js"></script>
     <script src="bootstrap-4.4.1-dist/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="apis.js"></script> 
+    <script type="text/javascript" src="components/map/map.js"></script>
     <script type="text/javascript" src="components/list/event.js"></script>
-    <script type="text/javascript" src="components/list/eventlist.js"></script>
-    <script type="text/javascript" src="apis.js"></script>
+    <script type="text/javascript" src="components/list/eventlist.js"></script> 
     <script type="text/javascript" src="main.js"></script>
-</body>
+  </body>
 </html>
