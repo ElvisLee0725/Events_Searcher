@@ -1,14 +1,11 @@
 class EventMap {
-    constructor(latLngData) {
+    constructor(mapMarkers, callbacks) {
         this.initMap = this.initMap.bind(this);
         this.failInitMap = this.failInitMap.bind(this);
+        this.getEventsNearby = this.getEventsNearby.bind(this);
 
-        var uluru = {lat: -25.344, lng: 131.036};
-        var irvine = {lat: 33.6846, lng: -117.8265};
-        var newYork = {lat: 40.7128, lng: -74.006};
-        this.locations = [uluru, irvine, newYork];
-
-        this.data = latLngData;
+        this.markers = mapMarkers;
+        this.callbacks = callbacks;
     }
 
     getMapFromServer() {
@@ -22,22 +19,43 @@ class EventMap {
     }
 
     initMap() {
+        // Initialize the map
         var map = new google.maps.Map(
             document.getElementById('map'), { 
-                zoom: 3, 
-                center: new google.maps.LatLng(2.8,-187.3)
+                zoom: 4, 
+                center: new google.maps.LatLng(37.0902, -95.7129)
             });
     
-        for(let i = 0; i < this.data.length; i++) {
-            let latLng = new google.maps.LatLng(this.data[i].latitude, this.data[i].longitude);
+        // Iterate all the event markers and position on the map
+        for(let i = 0; i < this.markers.length; i++) {
+            let latLng = new google.maps.LatLng(this.markers[i].data.latLng.latitude, this.markers[i].data.latLng.longitude);
             let marker = new google.maps.Marker({
                 position: latLng,
                 map: map
             });
+      
+            // Render the content of each marker in the info window
+            let infowindow = new google.maps.InfoWindow({
+                content: this.markers[i].renderContent()
+            });
+      
+            // Open the info window when click
+            marker.addListener('click', function() {
+                infowindow.open(map, marker);
+            });
         }
+
+        // Add click event listener for the map. Fire the callback to get events around the LatLng clicked. 
+        map.addListener('click', (e) => {
+            this.getEventsNearby(e.latLng);
+        });
     }
 
     failInitMap(error) {
         console.error(error);
+    }
+
+    getEventsNearby(latLng) {
+        this.callbacks.handleClick(this, latLng);
     }
 }

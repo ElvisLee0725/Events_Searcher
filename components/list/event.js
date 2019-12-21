@@ -35,6 +35,7 @@ class Event {
     }
 
     findImageIndex(images) {
+        // Get the image with suitable size from all images
         let index = images.findIndex((image) => {
             return image.width === 100;
         });
