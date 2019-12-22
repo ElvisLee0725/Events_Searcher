@@ -3,7 +3,7 @@ class EventList {
         this.getDataFromServer = this.getDataFromServer.bind(this);
         this.processGetDataFromServer = this.processGetDataFromServer.bind(this);
         this.failGetDataFromServer = this.failGetDataFromServer.bind(this);
-        this.sortEventsByDate = this.sortEventsByDate.bind(this);
+        this.sortEventList = this.sortEventList.bind(this);
         this.handleEventsFromMapClick = this.handleEventsFromMapClick.bind(this);
 
         this.events = [];
@@ -15,34 +15,32 @@ class EventList {
                 eventCity: $(elementConfig.eventCity),
                 eventRange: $(elementConfig.eventRange),
                 searchBtn: $(elementConfig.searchBtn),
-                sortByDate: $(elementConfig.sortByDate)
+                sortBy: $(elementConfig.sortBy)
             },
             mapArea: $(elementConfig.eventMap),
             eventList: $(elementConfig.eventList)
         };    
         this.eventMap = null;
         this.addEventListeners();
-        
     }
 
     addEventListeners() {
         this.domElements.inputs.searchBtn.click(this.getDataFromServer);
-        this.domElements.inputs.sortByDate.change(this.sortEventsByDate);
+        this.domElements.inputs.sortBy.change(this.sortEventList);
     }
 
     getSearchUrl(elements) {
         const title = elements['eventTitle'].value;
         const type = elements['eventType'].value;
-        // const venue = elements['eventVenue'].value;
         const city = elements['eventCity'].value;
-        // const range = elements['eventRange'].value;
         let url = `https://app.ticketmaster.com/discovery/v2/events.json?keyword=${title}&classificationName=${type}&city=${city}&countryCode=US&apikey=${TICKET_MASTER_APIKEY}`;
         return url;
     }
 
     getDataFromServer(e) {
         e.preventDefault();
-        this.domElements.inputs.sortByDate.prop("checked", false);
+        // this.domElements.inputs.sortByDate.prop("checked", false);
+        // this.domElements.inputs.sortBy.val === "";
         const searchUrl = this.getSearchUrl(e.currentTarget.form.elements);
         $.ajax({
             url: `${searchUrl}`,
@@ -70,10 +68,12 @@ class EventList {
             this.displayAllEvents(this.events);
         }
         else {
+            // If there is no result, show message in the map area and clean up the event list area.
             let $noResult = $("<h4>", {
                 text: 'No search results found.'
-            })
+            });
             this.domElements.mapArea.empty().append($noResult);
+            this.domElements.eventList.empty();
         }
     }
 
@@ -106,6 +106,7 @@ class EventList {
             data.city = event.data._embedded.venues[0].city.name;
             data.venue = event.data._embedded.venues[0].name;
             data.date = event.data.dates.start.localDate;
+            data.image = event.data.images[event.findImageIndex(event.data.images)].url;
             data.latLng = event.data._embedded.venues[0].location;
 
             const mapMarker = new MapMarker(data);
@@ -126,16 +127,30 @@ class EventList {
         return this.events.length;
     }
 
-    sortEventsByDate() {
-        // Do sorting when sort by date is checked
-        if(this.domElements.inputs.sortByDate[0].checked && this.events.length > 0) {
-            this.events.sort((e1, e2) => {
-                if(Date.parse(e1.data.dates.start.localDate) === Date.parse(e2.data.dates.start.localDate)) {
-                    return 0;
-                }
-                return Date.parse(e1.data.dates.start.localDate) < Date.parse(e2.data.dates.start.localDate) ? -1 : 1;
-            });
-            this.render(this.events);
+    sortEventList(e) {
+        const sortBy = e.target.value;
+
+        if(sortBy === 'byDate') {
+            if(this.events.length > 0) {
+                this.events.sort((e1, e2) => {
+                    if(Date.parse(e1.data.dates.start.localDate) === Date.parse(e2.data.dates.start.localDate)) {
+                        return 0;
+                    }
+                    return Date.parse(e1.data.dates.start.localDate) < Date.parse(e2.data.dates.start.localDate) ? -1 : 1;
+                });
+                this.render(this.events);
+            }
+        }
+        else if(sortBy === 'byVenue') {
+            if(this.events.length > 0) {
+                this.events.sort((e1, e2) => {
+                    if(e1.data._embedded.venues[0].name === e2.data._embedded.venues[0].name) {
+                        return 0;
+                    }
+                    return e1.data._embedded.venues[0].name < e2.data._embedded.venues[0].name ? -1 : 1;
+                });
+                this.render(this.events);
+            }
         }
     }
 }

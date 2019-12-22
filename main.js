@@ -1,16 +1,15 @@
 $( initializeApp );
 
 function initializeApp() {
-    let eventList = new EventList({
+    const eventList = new EventList({
         eventTitle: $('#eventTitle'),
         eventType: $('#eventType'),
         eventVenue: $('#eventVenue'),
         eventCity: $('#eventCity'),
         eventRange: $('#eventRange'),
-        sortByDate: $('#sortByDate'),
+        sortBy: $('#sort'),
         searchBtn: '#searchBtn',
         eventMap: '#map',
         eventList: '#eventsList'
     });
-    // eventList.getDataFromServer();
 }

@@ -26,6 +26,8 @@ class EventMap {
                 center: new google.maps.LatLng(37.0902, -95.7129)
             });
     
+        // Keep track of the previous open infowindow so when a new one is click, previous one can be closed.
+        let prev_infoWindow = false;
         // Iterate all the event markers and position on the map
         for(let i = 0; i < this.markers.length; i++) {
             let latLng = new google.maps.LatLng(this.markers[i].data.latLng.latitude, this.markers[i].data.latLng.longitude);
@@ -41,6 +43,10 @@ class EventMap {
       
             // Open the info window when click
             marker.addListener('click', function() {
+                if(prev_infoWindow) {
+                    prev_infoWindow.close();
+                }
+                prev_infoWindow = infowindow;
                 infowindow.open(map, marker);
             });
         }
