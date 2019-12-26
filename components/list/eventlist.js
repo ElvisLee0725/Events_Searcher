@@ -114,10 +114,10 @@ class EventList {
         });
 
         // Clean the mapArea before generating a new one
-        if(this.domElements.mapArea.children().length > 0) {
-            this.domElements.mapArea.empty();
-        }
-        this.eventMap = new EventMap(mapMarkers, { handleClick: this.handleEventsFromMapClick });
+        // if(this.domElements.mapArea.children().length > 0) {
+        //     this.domElements.mapArea.empty();
+        // }
+        this.eventMap = new EventMap(this.domElements.mapArea, mapMarkers, { handleClick: this.handleEventsFromMapClick });
         this.eventMap.getMapFromServer();
     }
 

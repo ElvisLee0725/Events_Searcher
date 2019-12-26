@@ -1,9 +1,12 @@
 class EventMap {
-    constructor(mapMarkers, callbacks) {
+    constructor(mapDom, mapMarkers, callbacks) {
         this.initMap = this.initMap.bind(this);
         this.failInitMap = this.failInitMap.bind(this);
         this.getEventsNearby = this.getEventsNearby.bind(this);
 
+        this.domElements = {
+            map: mapDom
+        };
         this.markers = mapMarkers;
         this.callbacks = callbacks;
     }
@@ -21,7 +24,7 @@ class EventMap {
     initMap() {
         // Initialize the map
         var map = new google.maps.Map(
-            document.getElementById('map'), { 
+            this.domElements.map[0], { 
                 zoom: 4, 
                 center: new google.maps.LatLng(37.0902, -95.7129)
             });
