@@ -10,6 +10,8 @@ function initializeApp() {
         sortBy: '#sort',
         searchBtn: '#searchBtn',
         eventMap: '#map',
+        prevBtn: '#prevBtn',
+        nextBtn: '#nextBtn',
         eventList: '#eventsList'
     });
 }

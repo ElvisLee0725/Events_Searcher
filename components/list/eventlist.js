@@ -5,6 +5,8 @@ class EventList {
         this.failGetDataFromServer = this.failGetDataFromServer.bind(this);
         this.sortEventList = this.sortEventList.bind(this);
         this.handleEventsFromMapClick = this.handleEventsFromMapClick.bind(this);
+        this.handlePrevBtnClick = this.handlePrevBtnClick.bind(this);
+        this.handleNextBtnClick = this.handleNextBtnClick.bind(this);
 
         this.events = [];
         this.domElements = {
@@ -16,18 +18,26 @@ class EventList {
                 sortBy: $(elementConfig.sortBy)
             },
             mapArea: $(elementConfig.eventMap),
+            pagination: {
+                prevBtn: $(elementConfig.prevBtn),
+                nextBtn: $(elementConfig.nextBtn)
+            },
             eventList: $(elementConfig.eventList)
         };    
         this.eventMap = null;
         this.searchTitle = "";
         this.searchType = "";
         this.searchCity = "";
+        this.pageNumber = null;
+        this.totalPages = null;
         this.addEventListeners();
     }
 
     addEventListeners() {
         this.domElements.inputs.searchBtn.click(this.getDataFromServer);
         this.domElements.inputs.sortBy.change(this.sortEventList);
+        this.domElements.pagination.prevBtn.click(this.handlePrevBtnClick);
+        this.domElements.pagination.nextBtn.click(this.handleNextBtnClick);
     }
 
     getSearchUrl(elements) {
@@ -69,6 +79,8 @@ class EventList {
     processGetDataFromServer(response) {
         if(response._embedded) {
             this.events = [];
+            this.pageNumber = response.page.number;
+            this.totalPages = response.page.totalPages;
             this.loadEvents(response._embedded.events);
             this.displayAllEvents(this.events);
         }
@@ -157,5 +169,19 @@ class EventList {
                 this.render(this.events);
             }
         }
+    }
+    // Check if this.pageNumber === 0 or is the last page. If so, return 
+    // Else, this.pageNumber++ (to next) or this.pageNumber-- (to prev) and fire the TM API with page=this.pageNumber
+    // After getting the data, empty the current events [] with new data
+    handlePrevBtnClick(e) {
+        e.preventDefault();
+        console.log("Prev Click");
+    }
+    handleNextBtnClick(e) {
+        e.preventDefault();
+        if(this.pageNumber !== null && this.pageNumber + 1 === this.totalPages) {
+            return;
+        }
+        console.log("Next Click");
     }
 }

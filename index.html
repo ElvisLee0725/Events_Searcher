@@ -85,26 +85,37 @@
 
     <section>
       <div class="container">
-        <div class="row">
-            <table class="table table-striped">
-                <thead>
-                  <tr>
-                    <th scope="col">Title</th>
-                    <th scope="col">City</th>
-                    <th scope="col">Venue</th>
-                    <th scope="col">Date</th>
-                    <th scope="col">Photo</th>
-                  </tr>
-                </thead>
-                <tbody id="eventsList">
-               
-                </tbody>
-              </table>      
-        </div>
+        <nav aria-label="Event List Pagination" id="eventsPagination">
+          <ul class="pagination justify-content-end">
+            <li class="page-item disabled" id="prevBtn">
+              <a class="page-link" href="#" tabindex="-1">Prev</a>
+            </li>
+            <!-- <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item">
+              <a class="page-link" href="#">2</a>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li> -->
+            <li class="page-item" id="nextBtn">
+              <a class="page-link" href="#">Next</a>
+            </li>
+          </ul>
+        </nav>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">Title</th>
+              <th scope="col">City</th>
+              <th scope="col">Venue</th>
+              <th scope="col">Date</th>
+              <th scope="col">Photo</th>
+            </tr>
+          </thead>
+          <tbody id="eventsList">
+          
+          </tbody>
+        </table>      
       </div>
     </section>
-
-    
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
