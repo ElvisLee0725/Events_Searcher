@@ -11,9 +11,7 @@ class EventList {
             inputs: {
                 eventTitle: $(elementConfig.eventTitle),
                 eventType: $(elementConfig.eventType),
-                eventVenue: $(elementConfig.eventVenue),
                 eventCity: $(elementConfig.eventCity),
-                eventRange: $(elementConfig.eventRange),
                 searchBtn: $(elementConfig.searchBtn),
                 sortBy: $(elementConfig.sortBy)
             },
@@ -21,6 +19,9 @@ class EventList {
             eventList: $(elementConfig.eventList)
         };    
         this.eventMap = null;
+        this.searchTitle = "";
+        this.searchType = "";
+        this.searchCity = "";
         this.addEventListeners();
     }
 
@@ -30,17 +31,15 @@ class EventList {
     }
 
     getSearchUrl(elements) {
-        const title = elements['eventTitle'].value;
-        const type = elements['eventType'].value;
-        const city = elements['eventCity'].value;
-        let url = `https://app.ticketmaster.com/discovery/v2/events.json?keyword=${title}&classificationName=${type}&city=${city}&countryCode=US&apikey=${TICKET_MASTER_APIKEY}`;
+        this.searchTitle = elements['eventTitle'].value ? elements['eventTitle'].value : "";
+        this.searchType = elements['eventType'].value ? elements['eventType'].value : "";
+        this.searchCity = elements['eventCity'].value ? elements['eventCity'].value : "";
+        const url = `https://app.ticketmaster.com/discovery/v2/events.json?keyword=${this.searchTitle}&classificationName=${this.searchType}&city=${this.searchCity}&countryCode=US&apikey=${TICKET_MASTER_APIKEY}`;
         return url;
     }
 
     getDataFromServer(e) {
         e.preventDefault();
-        // this.domElements.inputs.sortByDate.prop("checked", false);
-        // this.domElements.inputs.sortBy.val === "";
         const searchUrl = this.getSearchUrl(e.currentTarget.form.elements);
         $.ajax({
             url: `${searchUrl}`,
@@ -52,8 +51,14 @@ class EventList {
     }
 
     handleEventsFromMapClick(eventMap, latLng) {
+        // Get value from jQuery Objects
+        this.searchTitle = this.domElements.inputs.eventTitle[0].value ? this.domElements.inputs.eventTitle[0].value : "";
+        this.searchType = this.domElements.inputs.eventType[0].value ? this.domElements.inputs.eventType[0].value : "";
+        this.searchCity = this.domElements.inputs.eventCity[0].value ? this.domElements.inputs.eventCity[0].value : "";
+        
+        // Use .lat() and .lng() to get the latitude and longitude strings
         $.ajax({
-            url: `https://app.ticketmaster.com/discovery/v2/events.json?latlong=${latLng.lat()},${latLng.lng()}&countryCode=US&apikey=${TICKET_MASTER_APIKEY}`,
+            url: `https://app.ticketmaster.com/discovery/v2/events.json?keyword=${this.searchTitle}&classificationName=${this.searchType}&city=${this.searchCity}&latlong=${latLng.lat()},${latLng.lng()}&countryCode=US&apikey=${TICKET_MASTER_APIKEY}`,
             method: 'GET',
             dataType: 'json'
         })
