@@ -20,16 +20,20 @@ class EventList {
             mapArea: $(elementConfig.eventMap),
             pagination: {
                 prevBtn: $(elementConfig.prevBtn),
-                nextBtn: $(elementConfig.nextBtn)
+                nextBtn: $(elementConfig.nextBtn),
+                pageNumber: $(elementConfig.pageNumber)
             },
             eventList: $(elementConfig.eventList)
         };    
         this.eventMap = null;
+        this.latLng = {};
         this.searchTitle = "";
         this.searchType = "";
         this.searchCity = "";
         this.pageNumber = null;
         this.totalPages = null;
+        this.totalEvents = null;
+        this.pageSize = null;
         this.addEventListeners();
     }
 
@@ -44,12 +48,13 @@ class EventList {
         this.searchTitle = elements['eventTitle'].value ? elements['eventTitle'].value : "";
         this.searchType = elements['eventType'].value ? elements['eventType'].value : "";
         this.searchCity = elements['eventCity'].value ? elements['eventCity'].value : "";
-        const url = `https://app.ticketmaster.com/discovery/v2/events.json?keyword=${this.searchTitle}&classificationName=${this.searchType}&city=${this.searchCity}&countryCode=US&apikey=${TICKET_MASTER_APIKEY}`;
+        const url = `https://app.ticketmaster.com/discovery/v2/events.json?keyword=${this.searchTitle}&classificationName=${this.searchType}&city=${this.searchCity}&sort=date,asc&countryCode=US&apikey=${TICKET_MASTER_APIKEY}`;
         return url;
     }
 
     getDataFromServer(e) {
         e.preventDefault();
+        this.latLng = {};
         const searchUrl = this.getSearchUrl(e.currentTarget.form.elements);
         $.ajax({
             url: `${searchUrl}`,
@@ -65,10 +70,11 @@ class EventList {
         this.searchTitle = this.domElements.inputs.eventTitle[0].value ? this.domElements.inputs.eventTitle[0].value : "";
         this.searchType = this.domElements.inputs.eventType[0].value ? this.domElements.inputs.eventType[0].value : "";
         this.searchCity = this.domElements.inputs.eventCity[0].value ? this.domElements.inputs.eventCity[0].value : "";
-        
+        this.latLng.lat = latLng.lat();
+        this.latLng.lng = latLng.lng();
         // Use .lat() and .lng() to get the latitude and longitude strings
         $.ajax({
-            url: `https://app.ticketmaster.com/discovery/v2/events.json?keyword=${this.searchTitle}&classificationName=${this.searchType}&city=${this.searchCity}&latlong=${latLng.lat()},${latLng.lng()}&countryCode=US&apikey=${TICKET_MASTER_APIKEY}`,
+            url: `https://app.ticketmaster.com/discovery/v2/events.json?keyword=${this.searchTitle}&classificationName=${this.searchType}&city=${this.searchCity}&latlong=${latLng.lat()},${latLng.lng()}&radius=200&unit=miles&sort=date,asc&countryCode=US&apikey=${TICKET_MASTER_APIKEY}`,
             method: 'GET',
             dataType: 'json'
         })
@@ -81,7 +87,19 @@ class EventList {
             this.events = [];
             this.pageNumber = response.page.number;
             this.totalPages = response.page.totalPages;
+            this.totalEvents = response.page.totalElements;
+            this.pageSize = response.page.size;
+            // When there are more than 1 page in the search result, show next page button
+            if(this.totalPages > 1 && this.pageNumber + 1 !== this.totalPages) {
+                this.domElements.pagination.nextBtn.removeClass('disabled');
+                this.domElements.pagination.nextBtn.children(":first").removeAttr('tabindex');
+            }
+            else {
+                this.domElements.pagination.nextBtn.addClass('disabled');
+                this.domElements.pagination.nextBtn.children(":first").attr('tabindex');
+            }
             this.loadEvents(response._embedded.events);
+            this.domElements.pagination.pageNumber.text(`${this.pageSize * this.pageNumber + 1} - ${this.pageSize * this.pageNumber + this.events.length}, total: ${this.totalEvents}`);
             this.displayAllEvents(this.events);
         }
         else {
@@ -91,6 +109,11 @@ class EventList {
             });
             this.domElements.mapArea.empty().append($noResult);
             this.domElements.eventList.empty();
+            this.domElements.pagination.prevBtn.addClass('disabled');
+            this.domElements.pagination.prevBtn.children(":first").attr('tabindex', '-1');
+            this.domElements.pagination.nextBtn.addClass('disabled');
+            this.domElements.pagination.nextBtn.children(":first").attr('tabindex', '-1');
+            this.domElements.pagination.pageNumber.text('');
         }
     }
 
@@ -130,10 +153,6 @@ class EventList {
             return mapMarker;
         });
 
-        // Clean the mapArea before generating a new one
-        // if(this.domElements.mapArea.children().length > 0) {
-        //     this.domElements.mapArea.empty();
-        // }
         this.eventMap = new EventMap(this.domElements.mapArea, mapMarkers, { handleClick: this.handleEventsFromMapClick });
         this.eventMap.getMapFromServer();
     }
@@ -175,13 +194,68 @@ class EventList {
     // After getting the data, empty the current events [] with new data
     handlePrevBtnClick(e) {
         e.preventDefault();
-        console.log("Prev Click");
+        // When current page is already the 1st page, do nothing.
+        if(this.pageNumber !== null && this.pageNumber === 0) {
+            return ;
+        }
+
+        this.pageNumber--;
+        // After decreasing page number, if it becomes the first page, disable the prev button
+        if(this.pageNumber !== null && this.pageNumber === 0) {
+            this.domElements.pagination.prevBtn.addClass('disabled');
+            this.domElements.pagination.prevBtn.children(":first").attr('tabindex', '-1');
+        }
+        
+        // Remove 'disabled' from NextBtn when it's not the last page.
+        if(this.pageNumber + 1 < this.totalPages) {
+            this.domElements.pagination.nextBtn.removeClass('disabled');
+            this.domElements.pagination.nextBtn.children(":first").removeAttr('tabindex');
+        }
+        this.getDataFromServerWithPage();
     }
+
     handleNextBtnClick(e) {
         e.preventDefault();
+        // When current page is the last page, do nothing.
         if(this.pageNumber !== null && this.pageNumber + 1 === this.totalPages) {
             return;
         }
-        console.log("Next Click");
+
+        this.pageNumber++;
+        // After adding current page number, if it becomes the last page, disable the next button
+        if(this.pageNumber !== null && this.pageNumber + 1 === this.totalPages) {
+            this.domElements.pagination.nextBtn.addClass('disabled');
+            this.domElements.pagination.nextBtn.children(":first").attr('tabindex', '-1');
+        }
+        
+        // Remove 'disabled' from PrevBtn when it's not the 1st page.
+        if(this.pageNumber > 0) {
+            this.domElements.pagination.prevBtn.removeClass('disabled');
+            this.domElements.pagination.prevBtn.children(":first").removeAttr('tabindex');
+        }
+        this.getDataFromServerWithPage();
+    }
+
+    getDataFromServerWithPage() {
+        // If the previous search is made with map click, get previous latlng with page search
+        if(this.latLng.lat && this.latLng.lng) {
+            $.ajax({
+                url: `https://app.ticketmaster.com/discovery/v2/events.json?keyword=${this.searchTitle}&classificationName=${this.searchType}&city=${this.searchCity}&page=${this.pageNumber}&latlong=${this.latLng.lat},${this.latLng.lng}&radius=200&unit=miles&sort=date,asc&countryCode=US&apikey=${TICKET_MASTER_APIKEY}`,
+                method: 'GET',
+                dataType: 'json'
+            })
+            .done(this.processGetDataFromServer)
+            .fail(this.failGetDataFromServer);
+        }
+        else {
+           $.ajax({
+                url: `https://app.ticketmaster.com/discovery/v2/events.json?keyword=${this.searchTitle}&classificationName=${this.searchType}&city=${this.searchCity}&page=${this.pageNumber}&sort=date,asc&countryCode=US&apikey=${TICKET_MASTER_APIKEY}`,
+                method: 'GET',
+                dataType: 'json'
+            })
+            .done(this.processGetDataFromServer)
+            .fail(this.failGetDataFromServer); 
+        }
+        
     }
 }

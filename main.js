@@ -12,6 +12,7 @@ function initializeApp() {
         eventMap: '#map',
         prevBtn: '#prevBtn',
         nextBtn: '#nextBtn',
+        pageNumber: '#pagination-number',
         eventList: '#eventsList'
     });
 }

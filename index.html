@@ -14,7 +14,8 @@
     <div class="jumbotron jumbotron-fluid">
         <div class="container">
           <h1 class="display-4">Events Searcher</h1>
-          <p class="lead">Search for events with customized inputs and show them on a map! You can also click on the map to get events near where you clicked with criteria in your inputs. After each search, you can sort them by date or venue.</p>
+          <p class="lead">Search for events with customized inputs and show them on a map! You can also click on the map to get events near where you just clicked (within 200 miles) according to your inputs.</p>
+          <p class="lead">By default, this application searches for events in the US.</p=>
         </div>
     </div>
     <section id="searchInputs">
@@ -36,10 +37,6 @@
                         <option value="theatre">Arts & Theatre</option>
                       </select>
                     </div>
-                  <!-- <div class="form-group col-md-6">
-                    <label for="eventVenue">Venue</label>
-                    <input type="text" class="form-control" id="eventVenue">
-                  </div> -->
                 </div>
                 
                 <div class="form-row">
@@ -47,34 +44,16 @@
                     <label for="eventCity">City</label>
                     <input type="text" class="form-control" id="eventCity">
                   </div>
-                  
-                  <!-- <div class="form-group col-md-6">
-                    <label for="eventType">Range</label>
-                    <select id="eventRange" class="form-control">
-                      <option value="" selected>---</option>
-                      <option value="10">10 Miles</option>
-                      <option value="50">50 Miles</option>
-                      <option value="100">100 Miles</option>
-                    </select>
-                  </div> -->
                 </div>
                 <button type="submit" class="btn btn-primary btn-block" id="searchBtn">Search</button>
               </form>
-              <!-- <div class="form-group">
-                <div class="form-check">
-                  <input class="form-check-input" type="checkbox" id="sortByDate">
-                  <label class="form-check-label" for="sortByDate">
-                    Sort by event date
-                  </label>
-                </div>
-              </div> -->
-              <div class="mt-3">
+              <!-- <div class="mt-3">
                 <select id="sort">
                   <option value="" selected>---</option>
                   <option value="byDate">Sort by Date</option>
                   <option value="byVenue">Sort by Venue</option>
                 </select>
-              </div>
+              </div> -->
           </div>
           <div class="col-md-8" id="map">
 
@@ -90,16 +69,12 @@
             <li class="page-item disabled" id="prevBtn">
               <a class="page-link" href="#" tabindex="-1">Prev</a>
             </li>
-            <!-- <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item">
-              <a class="page-link" href="#">2</a>
-            </li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li> -->
-            <li class="page-item" id="nextBtn">
-              <a class="page-link" href="#">Next</a>
+            <li class="page-item disabled" id="nextBtn">
+              <a class="page-link" href="#" tabindex="-1">Next</a>
             </li>
           </ul>
         </nav>
+        <div id="pagination-number" style="float:right;"></div>
         <table class="table table-striped">
           <thead>
             <tr>
@@ -123,7 +98,7 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     <script src="http://code.jquery.com/jquery-3.1.0.js"></script>
-    <script type="text/javascript" src="apis.js"></script> 
+    <script type="text/javascript" src="apis.js"></script>
     <script type="text/javascript" src="components/map/mapMarker.js"></script>
     <script type="text/javascript" src="components/map/map.js"></script>
     <script type="text/javascript" src="components/list/event.js"></script>
