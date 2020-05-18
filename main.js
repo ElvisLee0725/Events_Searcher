@@ -10,6 +10,7 @@ function initializeApp() {
         sortBy: '#sort',
         searchBtn: '#searchBtn',
         eventMap: '#map',
+        noResultMsg: '#no-result',
         prevBtn: '#prevBtn',
         nextBtn: '#nextBtn',
         pageNumber: '#pagination-number',

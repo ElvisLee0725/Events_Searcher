@@ -18,14 +18,19 @@ class EventList {
                 sortBy: $(elementConfig.sortBy)
             },
             mapArea: $(elementConfig.eventMap),
+            noResultMsg: $(elementConfig.noResultMsg),
             pagination: {
                 prevBtn: $(elementConfig.prevBtn),
                 nextBtn: $(elementConfig.nextBtn),
                 pageNumber: $(elementConfig.pageNumber)
             },
             eventList: $(elementConfig.eventList)
-        };    
-        this.eventMap = null;
+        };
+        // Initialize the map. ** We only want to load the map once! After each search just change the markers on it.
+        // If we destroy the previous map and build a new one each time after search, there will be warnings in console.
+        this.eventMap = new EventMap(this.domElements.mapArea, { handleClick: this.handleEventsFromMapClick });
+        this.eventMap.getMapFromServer();
+
         this.latLng = {};
         this.searchTitle = "";
         this.searchType = "";
@@ -101,13 +106,16 @@ class EventList {
             this.loadEvents(response._embedded.events);
             this.domElements.pagination.pageNumber.text(`${this.pageSize * this.pageNumber + 1} - ${this.pageSize * this.pageNumber + this.events.length}, total: ${this.totalEvents}`);
             this.displayAllEvents(this.events);
+
+            this.domElements.noResultMsg.empty();
         }
         else {
+            this.domElements.noResultMsg.empty();
             // If there is no result, show message in the map area and clean up the event list area.
             let $noResult = $("<h4>", {
                 text: 'No search results found.'
             });
-            this.domElements.mapArea.empty().append($noResult);
+            this.domElements.noResultMsg.append($noResult);
             this.domElements.eventList.empty();
             this.domElements.pagination.prevBtn.addClass('disabled');
             this.domElements.pagination.prevBtn.children(":first").attr('tabindex', '-1');
@@ -140,6 +148,8 @@ class EventList {
     }
 
     renderMap(events) {
+        this.eventMap.deleteMarkers();
+        // Create customized mapMarker data structure for the map to transform to Google markers
         let mapMarkers = events.map((event) => {
             let data = {};
             data.title = event.data.name;
@@ -153,8 +163,7 @@ class EventList {
             return mapMarker;
         });
 
-        this.eventMap = new EventMap(this.domElements.mapArea, mapMarkers, { handleClick: this.handleEventsFromMapClick });
-        this.eventMap.getMapFromServer();
+        this.eventMap.renderMarkersOnMap(mapMarkers);
     }
 
     addEvent(data) {

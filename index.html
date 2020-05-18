@@ -13,9 +13,13 @@
   <body>
     <div class="jumbotron jumbotron-fluid">
         <div class="container">
-          <h1 class="display-4">Events Searcher</h1>
-          <p class="lead">Search for events with customized inputs and show them on a map! You can also click on the map to get events near where you just clicked (within 200 miles) according to your inputs.</p>
-          <p class="lead">By default, this application searches for events in the US.</p=>
+          <h1 class="display-4">Fun Searcher</h1>
+          <h2>Never Miss An Exciting Moment Again</h2>
+          <p class="lead">Search for events with customized inputs (event name, type and city) and show them on a map! Click on those pins to get more details.
+          <br /> You can also click on the map to get events near where you just clicked (within 200 miles) filtered by your inputs.
+          </p>
+          <p class="lead">By default, this app searches for events in the US, and pagination is implemented when your search result has more than 20 data.</p>
+          <p class="lead">This app is built with TicketMaster and Google Map API for OOP JavaScript demostration.</p>
         </div>
     </div>
     <section id="searchInputs">
@@ -56,14 +60,13 @@
               </div> -->
           </div>
           <div class="col-md-8" id="map">
-
           </div>
         </div>
       </div>   
     </section>
-
     <section>
       <div class="container">
+        <div id="no-result"></div>
         <nav aria-label="Event List Pagination" id="eventsPagination">
           <ul class="pagination justify-content-end">
             <li class="page-item disabled" id="prevBtn">
