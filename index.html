@@ -1,69 +1,85 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
     <title>Fun Searcher</title>
-    <link rel="stylesheet" href="styles.css"/>
-
+    <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <div class="jumbotron jumbotron-fluid">
-        <div class="container">
-          <h1 class="display-4">Fun Searcher</h1>
-          <h2>Never Miss An Exciting Moment Again</h2>
-          <p class="lead">Search for events with customized inputs (event name, type and city) and show them on a map! Click on those pins to get more details.
-          <br /> You can also click on the map to get events near where you just clicked (within 200 miles) filtered by your inputs.
-          </p>
-          <p class="lead">By default, this app searches for events in the US, and pagination is implemented when your search result has more than 20 data.</p>
-          <p class="lead">This app is built with TicketMaster and Google Map API for OOP JavaScript demostration.</p>
-        </div>
+      <div class="container">
+        <h1 class="display-4">Fun Searcher</h1>
+        <h2>Never Miss An Exciting Moment Again!</h2>
+        <p class="lead">
+          Search for events with customized inputs (event name, type and city)
+          and show them on a map! Click on those pins to get more details.
+        </p>
+        <p class="lead">
+          You can also click on the map to get events near where you just
+          clicked (within 200 miles) filtered by your inputs.
+        </p>
+        <p class="lead">
+          By default, this app searches for events in the US, and pagination is
+          implemented when your search result has more than 20 data.
+        </p>
+        <p class="lead">
+          This app is built with TicketMaster and Google Map API for OOP
+          JavaScript demostration.
+        </p>
+      </div>
     </div>
     <section id="searchInputs">
       <div class="container mb-4">
         <div class="row">
           <div class="col-12 col-sm-4">
-              <form>
-                <div class="form-group">
-                  <label for="eventTitle">Event Name</label>
-                  <input type="text" class="form-control" id="eventTitle">
+            <form>
+              <div class="form-group">
+                <label for="eventTitle">Event Name</label>
+                <input type="text" class="form-control" id="eventTitle" />
+              </div>
+              <div class="form-row">
+                <div class="form-group col">
+                  <label for="eventType">Event Type</label>
+                  <select id="eventType" class="form-control">
+                    <option value="" selected>---</option>
+                    <option value="sports">Sports</option>
+                    <option value="music">Music</option>
+                    <option value="theatre">Arts & Theatre</option>
+                  </select>
                 </div>
-                <div class="form-row">
-                    <div class="form-group col">
-                      <label for="eventType">Event Type</label>
-                      <select id="eventType" class="form-control">
-                        <option value="" selected>---</option>
-                        <option value="sports">Sports</option>
-                        <option value="music">Music</option>
-                        <option value="theatre">Arts & Theatre</option>
-                      </select>
-                    </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group col">
+                  <label for="eventCity">City</label>
+                  <input type="text" class="form-control" id="eventCity" />
                 </div>
-                
-                <div class="form-row">
-                  <div class="form-group col">
-                    <label for="eventCity">City</label>
-                    <input type="text" class="form-control" id="eventCity">
-                  </div>
-                </div>
-                <button type="submit" class="btn btn-primary btn-block" id="searchBtn">Search</button>
-              </form>
-              <!-- <div class="mt-3">
-                <select id="sort">
-                  <option value="" selected>---</option>
-                  <option value="byDate">Sort by Date</option>
-                  <option value="byVenue">Sort by Venue</option>
-                </select>
-              </div> -->
+              </div>
+              <button
+                type="submit"
+                class="btn btn-primary btn-block"
+                id="searchBtn"
+              >
+                Search
+              </button>
+            </form>
           </div>
-          <div class="col-12 col-sm-8" id="map">
-          </div>
+          <div class="col-12 col-sm-8" id="map"></div>
         </div>
-      </div>   
+      </div>
     </section>
     <section>
       <div class="container">
@@ -78,7 +94,7 @@
             </li>
           </ul>
         </nav>
-        <div id="pagination-number" style="float:right;"></div>
+        <div id="pagination-number" style="float: right;"></div>
         <table class="table table-striped">
           <thead>
             <tr>
@@ -89,24 +105,34 @@
               <th scope="col">Photo</th>
             </tr>
           </thead>
-          <tbody id="eventsList">
-          
-          </tbody>
-        </table>      
+          <tbody id="eventsList"></tbody>
+        </table>
       </div>
     </section>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+      integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+      integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+      crossorigin="anonymous"
+    ></script>
     <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
     <script type="text/javascript" src="apis.js"></script>
     <script type="text/javascript" src="components/map/mapMarker.js"></script>
     <script type="text/javascript" src="components/map/map.js"></script>
     <script type="text/javascript" src="components/list/event.js"></script>
-    <script type="text/javascript" src="components/list/eventlist.js"></script> 
+    <script type="text/javascript" src="components/list/eventlist.js"></script>
     <script type="text/javascript" src="main.js"></script>
   </body>
 </html>
