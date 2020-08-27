@@ -1,6 +1,10 @@
+.lead {
+  font-size: 1rem;
+}
+
 @media screen and (max-width: 480px) {
-    #map {
-        height: 50vh;
-        margin: 2rem 0 .5rem;
-    }
+  #map {
+    height: 50vh;
+    margin: 2rem 0 0.5rem;
+  }
 }
