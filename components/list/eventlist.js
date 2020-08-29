@@ -62,7 +62,10 @@ class EventList {
     this.searchCity = elements['eventCity'].value
       ? elements['eventCity'].value
       : '';
-    const url = `https://app.ticketmaster.com/discovery/v2/events.json?keyword=${this.searchTitle}&classificationName=${this.searchType}&city=${this.searchCity}&sort=date,asc&countryCode=US&apikey=${TICKET_MASTER_APIKEY}`;
+
+    // Use .toISOString() to get the format for TicketMaster start date search
+    const startDate = new Date().toISOString().split('.')[0] + 'Z';
+    const url = `https://app.ticketmaster.com/discovery/v2/events.json?keyword=${this.searchTitle}&classificationName=${this.searchType}&city=${this.searchCity}&startDateTime=${startDate}&sort=date,asc&countryCode=US&apikey=${TICKET_MASTER_APIKEY}`;
     return url;
   }
 
