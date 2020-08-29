@@ -6,6 +6,7 @@ function initializeApp() {
     eventType: '#eventType',
     eventVenue: '#eventVenue',
     eventCity: '#eventCity',
+    eventState: '#eventState',
     eventRange: '#eventRange',
     sortBy: '#sort',
     searchBtn: '#searchBtn',

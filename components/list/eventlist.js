@@ -14,6 +14,7 @@ class EventList {
         eventTitle: $(elementConfig.eventTitle),
         eventType: $(elementConfig.eventType),
         eventCity: $(elementConfig.eventCity),
+        eventState: $(elementConfig.eventState),
         searchBtn: $(elementConfig.searchBtn),
         sortBy: $(elementConfig.sortBy),
       },
@@ -38,6 +39,9 @@ class EventList {
     this.searchTitle = '';
     this.searchType = '';
     this.searchCity = '';
+    this.searchState = '';
+    // Use .toISOString() to get the format for TicketMaster start date search
+    this.startDate = new Date().toISOString().split('.')[0] + 'Z';
     this.pageNumber = null;
     this.totalPages = null;
     this.totalEvents = null;
@@ -56,16 +60,20 @@ class EventList {
     this.searchTitle = elements['eventTitle'].value
       ? elements['eventTitle'].value
       : '';
+
     this.searchType = elements['eventType'].value
       ? elements['eventType'].value
       : '';
+
     this.searchCity = elements['eventCity'].value
       ? elements['eventCity'].value
       : '';
 
-    // Use .toISOString() to get the format for TicketMaster start date search
-    const startDate = new Date().toISOString().split('.')[0] + 'Z';
-    const url = `https://app.ticketmaster.com/discovery/v2/events.json?keyword=${this.searchTitle}&classificationName=${this.searchType}&city=${this.searchCity}&startDateTime=${startDate}&sort=date,asc&countryCode=US&apikey=${TICKET_MASTER_APIKEY}`;
+    this.searchState = elements['eventState'].value
+      ? elements['eventState'].value
+      : '';
+
+    const url = `https://app.ticketmaster.com/discovery/v2/events.json?keyword=${this.searchTitle}&classificationName=${this.searchType}&city=${this.searchCity}&stateCode=${this.searchState}&startDateTime=${this.startDate}&sort=date,asc&countryCode=US&apikey=${TICKET_MASTER_APIKEY}`;
     return url;
   }
 
@@ -124,20 +132,19 @@ class EventList {
     this.searchTitle = this.domElements.inputs.eventTitle[0].value
       ? this.domElements.inputs.eventTitle[0].value
       : '';
+
     this.searchType = this.domElements.inputs.eventType[0].value
       ? this.domElements.inputs.eventType[0].value
       : '';
-    this.searchCity = this.domElements.inputs.eventCity[0].value
-      ? this.domElements.inputs.eventCity[0].value
-      : '';
+
     this.latLng.lat = latLng.lat();
     this.latLng.lng = latLng.lng();
     // Use .lat() and .lng() to get the latitude and longitude strings
     $.ajax({
       url: `https://app.ticketmaster.com/discovery/v2/events.json?keyword=${
         this.searchTitle
-      }&classificationName=${this.searchType}&city=${
-        this.searchCity
+      }&classificationName=${
+        this.searchType
       }&latlong=${latLng.lat()},${latLng.lng()}&radius=200&unit=miles&sort=date,asc&countryCode=US&apikey=${TICKET_MASTER_APIKEY}`,
       method: 'GET',
       dataType: 'json',
@@ -367,7 +374,7 @@ class EventList {
     // If the previous search is made with map click, get previous latlng with page search
     if (this.latLng.lat && this.latLng.lng) {
       $.ajax({
-        url: `https://app.ticketmaster.com/discovery/v2/events.json?keyword=${this.searchTitle}&classificationName=${this.searchType}&city=${this.searchCity}&page=${this.pageNumber}&latlong=${this.latLng.lat},${this.latLng.lng}&radius=200&unit=miles&sort=date,asc&countryCode=US&apikey=${TICKET_MASTER_APIKEY}`,
+        url: `https://app.ticketmaster.com/discovery/v2/events.json?keyword=${this.searchTitle}&classificationName=${this.searchType}&city=${this.searchCity}&stateCode=${this.searchState}&startDateTime=${this.startDate}&page=${this.pageNumber}&latlong=${this.latLng.lat},${this.latLng.lng}&radius=200&unit=miles&sort=date,asc&countryCode=US&apikey=${TICKET_MASTER_APIKEY}`,
         method: 'GET',
         dataType: 'json',
       })
@@ -375,7 +382,7 @@ class EventList {
         .fail(this.failGetDataFromServer);
     } else {
       $.ajax({
-        url: `https://app.ticketmaster.com/discovery/v2/events.json?keyword=${this.searchTitle}&classificationName=${this.searchType}&city=${this.searchCity}&page=${this.pageNumber}&sort=date,asc&countryCode=US&apikey=${TICKET_MASTER_APIKEY}`,
+        url: `https://app.ticketmaster.com/discovery/v2/events.json?keyword=${this.searchTitle}&classificationName=${this.searchType}&city=${this.searchCity}&stateCode=${this.searchState}&startDateTime=${this.startDate}&page=${this.pageNumber}&sort=date,asc&countryCode=US&apikey=${TICKET_MASTER_APIKEY}`,
         method: 'GET',
         dataType: 'json',
       })
