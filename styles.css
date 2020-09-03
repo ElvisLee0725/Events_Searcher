@@ -2,6 +2,16 @@
   font-size: 1rem;
 }
 
+.themeColor {
+  background-color: #fa0c08;
+  color: #fff;
+}
+
+.btn.themeColor:hover {
+  color: #fff;
+  background-color: #b20604;
+}
+
 @media screen and (max-width: 480px) {
   #map {
     height: 50vh;
