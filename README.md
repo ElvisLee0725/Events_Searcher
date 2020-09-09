@@ -23,6 +23,16 @@ Try this application live at https://fun-searcher.elvislee.com
 - User can click on a marker and see event details
 - User can also start a search by clicking on the Google Map, events meet the search terms within 200 miles of the clicking point will be found
 
+## Preview
+
+### Start a search with inputs
+
+![search-events](preview/search-events.gif)
+
+### Search in specific location by clicking on the map
+
+![search-by-map-click](preview/search-by-map-click.gif)
+
 ## Development
 
 ### System Requirements
@@ -45,4 +55,4 @@ const TICKET_MASTER_APIKEY =    // Your Ticketmaster API key
 const GOOGLE_MAPS_APIKEY =      // Your Google Maps API key
 ```
 
-3. Start the project by opening the index.html file with a browser
+3. Start the project by opening the index.html file with a web browser
