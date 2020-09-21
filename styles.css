@@ -1,3 +1,7 @@
+a {
+  color: inherit;
+}
+
 .lead {
   font-size: 1rem;
 }
@@ -10,6 +14,10 @@
 .btn.themeColor:hover {
   color: #fff;
   background-color: #b20604;
+}
+
+.page-link {
+  color: #fa0c08;
 }
 
 @media screen and (max-width: 480px) {
