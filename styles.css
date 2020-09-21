@@ -20,6 +20,10 @@ a {
   color: #fa0c08;
 }
 
+.page-link:hover {
+  color: #b20604;
+}
+
 @media screen and (max-width: 480px) {
   #map {
     height: 50vh;
