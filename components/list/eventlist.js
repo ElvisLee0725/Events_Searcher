@@ -52,8 +52,6 @@ class EventList {
   addEventListeners() {
     this.domElements.inputs.searchBtn.click(this.getDataFromServer);
     this.domElements.inputs.sortBy.change(this.sortEventList);
-    // this.domElements.pagination.prevBtn.click(this.handlePrevBtnClick);
-    // this.domElements.pagination.nextBtn.click(this.handleNextBtnClick);
   }
 
   getSearchUrl(elements) {
