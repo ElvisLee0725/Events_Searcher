@@ -24,6 +24,10 @@ a {
   color: #b20604;
 }
 
+#map {
+  height: 30rem;
+}
+
 @media screen and (max-width: 480px) {
   #map {
     height: 50vh;
