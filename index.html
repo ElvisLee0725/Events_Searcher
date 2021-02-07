@@ -8,6 +8,10 @@
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
 
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@100;400&display=swap" rel="stylesheet" crossorigin="anonymous">
+
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"/>
 
@@ -16,30 +20,34 @@
     <link rel="stylesheet" href="styles.css"/> 
   </head>
   <body>
-    <div class="jumbotron jumbotron-fluid">
+    <header id="header-section" class="mb-5">
       <div class="container">
-        <h1 class="display-4">Fun Searcher</h1>
-        <h2>Never Miss An Exciting Moment Again!</h2>
-        <ul>
-          <li class="lead">
-            Search for events with customized inputs and show them on a map!
-            Click on those pins to get more details.
-          </li>
-          <li class="lead">
-            You may click on the map to get events near where you just clicked
-            (within 200 miles) filtered by your inputs.
-          </li>
-          <li class="lead">
-            By default, it searches for events in the US, and pagination is
-            implemented when your search has more than 20 results.
-          </li>
-          <li class="lead">
-            This app is built with TicketMaster and Google Maps API for OOP
-            JavaScript demostration.
-          </li>
-        </ul>
+        <div class="row">
+          <div class="col-12">
+            <h1 class="display-4">Fun Searcher</h1>
+            <h2>Never Miss An Exciting Moment Again!</h2>
+            <ul>
+              <li class="lead">
+                Search for events with customized inputs and show them on a map!
+                Click on those pins to get more details.
+              </li>
+              <li class="lead">
+                You may click on the map to get events near where you just clicked
+                (within 200 miles) filtered by your inputs.
+              </li>
+              <li class="lead">
+                By default, it searches for events in the US, and pagination is
+                implemented when your search has more than 20 results.
+              </li>
+              <li class="lead">
+                This app is built with TicketMaster and Google Maps API for OOP
+                JavaScript demostration.
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
-    </div>
+    </header>
     <section id="searchInputs">
       <div class="container mb-4">
         <form>
