@@ -42,7 +42,7 @@ a:hover {
 #header-section::before {
   content: '';
   background: url('https://elvislee-website-assets.s3-us-west-1.amazonaws.com/assets/rocker_cover-large.jpg')
-    no-repeat center center/cover;
+    no-repeat center 20% / cover;
   position: absolute;
   top: 0;
   left: 0;
